@@ -1,3 +1,4 @@
+using CqrsMediatRApi.Repositories;
 using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(typeof(Program));
+
+builder.Services.AddSingleton<FakeDataStore>();
 
 var app = builder.Build();
 
