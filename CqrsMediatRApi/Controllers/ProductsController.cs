@@ -18,6 +18,14 @@ namespace CqrsMediatRApi.Controllers
             _mediator = mediator;
         }
 
+        [HttpGet("{id:int}", Name = nameof(GetProductById))]
+        public async Task<IActionResult> GetProductById(int id)
+        {
+            var product = await _mediator.Send(new GetProductByIdQuery(id));
+
+            return Ok(product);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
@@ -29,9 +37,9 @@ namespace CqrsMediatRApi.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProduct(Product product)
         {
-            await _mediator.Send(new AddProductCommand(product));
+            var createdProduct = await _mediator.Send(new AddProductCommand(product));
 
-            return StatusCode(201);
+            return CreatedAtRoute(nameof(GetProductById), new { id = createdProduct.Id }, createdProduct);
         }
     }
 }
