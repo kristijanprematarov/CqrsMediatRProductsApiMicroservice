@@ -1,3 +1,4 @@
+using CqrsMediatRApi.Behaviours;
 using CqrsMediatRApi.Repositories;
 using MediatR;
 
@@ -12,6 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(typeof(Program));
 
 builder.Services.AddSingleton<FakeDataStore>();
+builder.Services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
 var app = builder.Build();
 
