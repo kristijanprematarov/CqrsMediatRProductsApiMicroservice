@@ -1,5 +1,6 @@
 ﻿using CqrsMediatRApi.Commands;
 using CqrsMediatRApi.Models;
+using CqrsMediatRApi.Notifications;
 using CqrsMediatRApi.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -38,6 +39,8 @@ namespace CqrsMediatRApi.Controllers
         public async Task<IActionResult> AddProduct(Product product)
         {
             var createdProduct = await _mediator.Send(new AddProductCommand(product));
+
+            await _mediator.Publish(new ProductAddedNotification(Product: createdProduct));
 
             return CreatedAtRoute(nameof(GetProductById), new { id = createdProduct.Id }, createdProduct);
         }
